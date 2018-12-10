@@ -1,0 +1,20 @@
+<h1>
+  Start a game
+</h1>
+<form id="startgameform">
+  <label for="playerone">Player One</label><input id="playerone" type="text" name="playerone">
+  <label for="playertwo">Player Two</label><input id="playertwo" type="text" name="playertwo">
+  <button type="submit" >Start</button>
+</form>
+<script>
+  $("#startgameform").submit(function (event) {
+      event.preventDefault()
+
+      data = {"data":{"attributes":{"playerone":$('#playerone').val(),"playertwo":$('#playertwo').val()},
+              "type":"game"
+          }}
+      $.ajax({url:"/games",method:"POST",data:data, function (data,status) {
+          window.location = "/games/play/"+data.data.id
+      }})
+  })
+</script>

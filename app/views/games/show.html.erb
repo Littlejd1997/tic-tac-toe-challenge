@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Player One:</strong>
+  <%= @game.playerone %> <%= "WINNER" if @game.winner == 0  %>
+</p>
+
+<p>
+  <strong>Player Two:</strong>
+  <%= @game.playertwo %> <%= "WINNER" if @game.winner == 1  %>
+</p>
+
+<p>
+  <table border="1">
+    <% JSON.parse(@game.board).each_with_index do |row,row_index| %>
+      <tr>
+        <% row.each_with_index  do |column,column_index| %>
+        <td><button class='action' data-column="<%= column_index %>" data-row="<%= row_index %>" <%= "disabled" unless (column.nil? && @game.winner.nil?)  %>> <%= column == 0 ? "X" : "O" unless column.nil? %> </button>  </td>
+        <%end %>
+      </tr>
+    <% end %>
+  </table>
+  <strong>Board:</strong>
+  <%= @game.board %>
+</p>
+
+<%= link_to 'Edit', edit_game_path(@game) %> |
+<%= link_to 'Back', games_path %>
+
+<script>
+    var board = <%=@game.board %>
+
+    function current_player() {
+        return ((JSON.stringify(board).split('0').length-1) + JSON.stringify(board).split('1').length-1) %2
+    }
+    // 0 represents X
+    // 1 represents O
+
+  $(".action").click(function (event ) {
+      board[this.dataset.row][this.dataset.column] = current_player()
+      data = JSON.stringify({"data":{"attributes":{"board":board},
+              "type":"game"
+          }})
+          // debugger
+      $.ajax({url:window.location,contentType:"application/json",method:"POST",data:data, function (data,status) {
+              window.reload()
+          }})
+  })
+</script>
