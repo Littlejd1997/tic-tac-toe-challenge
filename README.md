@@ -15,6 +15,47 @@ You can run...
  * docker build . -t tictactoe
  * docker run -it -p "3000:3000" tictactoe 
  * vist http://localhost:3000
+ 
+ You can consume the API using the JSON::API Specification
+ 
+- `GET /api/games`: Return a list of the Games known to the server, as JSON.
+
+
+- `POST /api/games`: Create a new `Game`, assigning it an ID and returning the newly created `Game`.
+
+- `GET /api/games/<id>`: Retrieve a `Game` by its ID, returning a `404` status
+  code if no game with that ID exists.
+
+- `POST /api/games/<id>`: Update the `Game` with the given ID, replacing its data with the newly `POST`ed data.
+
+ The attributes used for creation are playerone and playertwo.
+ 
+ The attributes used for update are playerone, playertwo, and board.
+ Example
+ 
+     {
+       "data": {
+         "attributes": {
+      "playerone": "Jack",
+      "playertwo": "Jill",
+      "board": [
+        [
+          null,null,null
+        ],
+        [
+          null,1,null
+        ],
+        [
+          null,null,0
+        ]
+      ]
+    },
+    "type": "game"
+       }
+     }
+     
+ 0 represents a X (player 1)
+ 1 represents a Y (player 2)
 
 ## Rules
 
